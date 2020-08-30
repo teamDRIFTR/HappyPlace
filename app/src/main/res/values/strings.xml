@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Happy Place</string>
+    <string name="pen_size">Pen size:</string>
 </resources>
