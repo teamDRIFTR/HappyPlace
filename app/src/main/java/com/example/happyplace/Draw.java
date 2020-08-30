@@ -2,6 +2,7 @@ package com.example.happyplace;
 
 import android.graphics.Path;
 
+//initializing
 public class Draw {
     public int color;
     public int paintSize;

@@ -106,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //permission
     @Override
     public void onRequestPermissionsResult(int requestCode , @NonNull String[] permissions , @NonNull int[] grantResults) {
         if(requestCode == STORAGE_PERMISSION_CODE)
@@ -146,6 +147,7 @@ public class MainActivity extends AppCompatActivity {
     //color menu
     private void OpenColorMenu()
     {
+        //menu for colors
         AmbilWarnaDialog ambilWarnaDialog = new AmbilWarnaDialog(this , defaultColor , new AmbilWarnaDialog.OnAmbilWarnaListener() {
             @Override
             public void onCancel(AmbilWarnaDialog dialog) {
