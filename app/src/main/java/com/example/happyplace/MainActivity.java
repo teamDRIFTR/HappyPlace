@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity {
         Button button;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        button = findViewById(R.id.ChangeColorButton);
+        paintView = findViewById(R.id.paintView);
+        button = findViewById(R.id.change_color_button);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         SeekBar seekBar = findViewById(R.id.seekBar);
-        final TextView textView =  findViewById(R.id.CurrBrushSize);
+        final TextView textView =  findViewById(R.id.current_pen_size);
 
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
 
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onProgressChanged(SeekBar seekBar , int progress , boolean fromUser) {
                 paintView.SetBrushWidth(seekBar.getProgress());
-                textView.setText("brush size"+ seekBar.getProgress());
+                textView.setText("brush size= "+ seekBar.getProgress());
             }
 
             @Override
@@ -79,7 +79,7 @@ public class MainActivity extends AppCompatActivity {
         menuInflater.inflate(R.menu.main,menu);
         return super.onCreateOptionsMenu(menu);
     }
-    private void StoragePermission()
+    private void GetStoragePermission()
     {
         if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.WRITE_EXTERNAL_STORAGE))
         {
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+    public boolean onOptionsItemSelected( MenuItem item) {
         switch(item.getItemId())
         {
             case R.id.clear_button:
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.save_button:
                if(ContextCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)!= PackageManager.PERMISSION_GRANTED)
                {
-                   StoragePermission();
+                   GetStoragePermission();
                }
                paintView.saveImage();
                 return true;

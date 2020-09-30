@@ -14,11 +14,10 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PaintView extends View {
@@ -26,24 +25,24 @@ public class PaintView extends View {
     public static int Brush_size = 5;
     public static final int Default_color = Color.BLUE;
     public static final int Default_bg_color = Color.WHITE;
-    private static final float touchT = 4;
+    private static final float touchTol = 4;
 
     //variables
-    private float mX,mY;
+    private float mX, mY;
     private Paint mPaint;
     private Path mPath;
     private int currentcolor;
     private int BackgroundColor = Default_bg_color;
     private int BrushWidth;
-    private Bitmap bitmap;
-    private Canvas canvas;
-    private Paint BitmpPaint = new Paint(Paint.DITHER_FLAG);
+    private Bitmap mbitmap;
+    private Canvas mcanvas;
+    private Paint mBitmpPaint = new Paint(Paint.DITHER_FLAG);
 
     private ArrayList<Draw> paths = new ArrayList<>();
     private ArrayList<Draw> undo = new ArrayList<>();
 
     public PaintView(Context context) {
-        super(context, null);
+        super(context , null);
     }
 
     public PaintView(Context context , AttributeSet attrs) {
@@ -59,146 +58,157 @@ public class PaintView extends View {
         mPaint.setAlpha(0xff);
     }
 
-    public void initialize (DisplayMetrics displayMetrics)
-    {
+    public void initialize(DisplayMetrics displayMetrics) {
         int Height = displayMetrics.heightPixels;
         int Width = displayMetrics.widthPixels;
-        bitmap = Bitmap.createBitmap(Width,Height, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
+        mbitmap = Bitmap.createBitmap(Width , Height , Bitmap.Config.ARGB_8888);
+        mcanvas = new Canvas(mbitmap);
 
         currentcolor = Default_color;
         BrushWidth = Brush_size;
     }
-//touch events
-    protected void onDRAW (Canvas canvas)
-    {
+
+    //touch events
+    protected void onDRAW(Canvas canvas) {
         //drawing background
         canvas.save();
         canvas.drawColor(BackgroundColor);
 
-        for (Draw draw : paths ){
+        for (Draw draw : paths) {
             mPaint.setColor(draw.color);
             mPaint.setStrokeWidth(BrushWidth);
             mPaint.setMaskFilter(null);
-            canvas.drawPath(draw.path,mPaint);
+            canvas.drawPath(draw.path , mPaint);
         }
-        canvas.drawBitmap(bitmap,0 ,0,BitmpPaint);
+        canvas.drawBitmap(mbitmap , 0 , 0 , mBitmpPaint);
         canvas.restore();
     }
 
-    public void start(float x,float y)
-    {
+    public void start(float x , float y) {
         mPath = new Path();
-        Draw draw = new Draw(currentcolor, BrushWidth,mPath);
+        Draw draw = new Draw(currentcolor , BrushWidth , mPath);
         paths.add(draw);
         mPath.reset();
-        mPath.moveTo(x,y);
+        mPath.moveTo(x , y);
         mX = x;
         mY = y;
 
     }
 
-    private void TouchUp()
-    {
-        mPath.lineTo(mX,mY);
+    private void TouchUp() {
+        mPath.lineTo(mX , mY);
     }
 
-    private void touchMove(float x, float y)
-    {
+    private void touchMove(float x , float y) {
         //difference in x
-        float diffx = Math.abs(x- mX);
+        float diffx = Math.abs(x - mX);
         //difference in y
         float diffy = Math.abs(y - mY);
 
-        if(diffx >= touchT || diffy>= touchT )
-        {
-            mPath.quadTo(mX,mY,(x+mX)/2,(y+mY)/2);
+        if (diffx >= touchTol || diffy >= touchTol) {
+            mPath.quadTo(mX , mY , (x + mX) / 2 , (y + mY) / 2);
 
             mY = y;
             mX = x;
         }
     }
-    public boolean TouchHandler(MotionEvent motionEvent)
-    {
-        float x = motionEvent.getX();
-        float y = motionEvent.getY();
 
-        switch(motionEvent.getAction()){
+    public boolean TouchHandler(MotionEvent mEvent) {
+        float x = mEvent.getX();
+        float y = mEvent.getY();
+
+        switch (mEvent.getAction()) {
             case MotionEvent.ACTION_DOWN:
-                start(x,y);
+                start(x , y);
                 invalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 TouchUp();
                 invalidate();
                 break;
-                case MotionEvent.ACTION_MOVE:
-                    touchMove(x,y);
-                    invalidate();
-                    break;
+            case MotionEvent.ACTION_MOVE:
+                touchMove(x , y);
+                invalidate();
+                break;
 
         }
         return true;
     }
 
-    public void WipeScreen(){
+    public void WipeScreen() {
         BackgroundColor = Default_bg_color;
         paths.clear();
         invalidate();
     }
+
     //allow the user to undo their stroke
-    public void undoStroke()
-    {
-        if(paths.size() > 0)
-        {
+    public void undoStroke() {
+        if (paths.size() > 0) {
             undo.add(paths.remove(paths.size() - 1));
             invalidate();
-        }
-        else{
-            Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext() , "error" , Toast.LENGTH_LONG).show();
         }
     }
+
     //allow the user to redo their stroke
-    public void RedoStroke()
-    {
-        if(undo.size() > 0)
-        {
+    public void RedoStroke() {
+        if (undo.size() > 0) {
             paths.add(undo.remove(undo.size() - 1));
             invalidate();
-        }
-        else{
-            Toast.makeText(getContext(), "error", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(getContext() , "error" , Toast.LENGTH_LONG).show();
         }
     }
+
     //set width and color
-    public void SetBrushWidth(int width)
-    {
+    public void SetBrushWidth(int width) {
         BrushWidth = width;
     }
-    public void SetBrushColor(int color)
-    {
+
+    public void SetBrushColor(int color) {
         currentcolor = color;
     }
+
     //allows user to save image
-    public void saveImage()
-    {
+    public void saveImage() {
         int count = 0;
         File Dir = Environment.getExternalStorageDirectory();
-        File subDir = new File(Dir.toString()+ "/Picture/Paint");
+        File subDir = new File(Dir.toString() + "/Picture/Paint");
 
-        if (subDir.exists())
-        {
+        if (subDir.exists()) {
             File[] existing = subDir.listFiles();
-            for (File file : existing)
-            {
-                if (file.getName().endsWith(".jpg") || file.getName().endsWith(".png"))
-                {
+            for (File file : existing) {
+                if (file.getName().endsWith(".jpg") || file.getName().endsWith(".png")) {
                     count++;
                 }
             }
-        }
-        else{
+        } else {
             subDir.mkdir();
+        }
+        if (subDir.exists()) {
+
+            File image = new File(subDir , "/drawing_" + (count + 1) + ".png");
+            FileOutputStream fileOutputStream;
+
+            try {
+
+                fileOutputStream = new FileOutputStream(image);
+
+                //mbitmap.compress(Bitmap.CompressFormat.PNG , 100 , fileOutputStream);
+
+                fileOutputStream.flush();
+                fileOutputStream.close();
+
+                Toast.makeText(getContext() , "saved" , Toast.LENGTH_LONG).show();
+
+            } catch (FileNotFoundException e) {
+
+
+            } catch (IOException e) {
+
+
+            }
         }
     }
 
