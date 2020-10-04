@@ -35,7 +35,7 @@ public class PaintView extends View {
     private int BackgroundColor = Default_bg_color;
     private int BrushWidth;
     private Bitmap mbitmap;
-    private Canvas mcanvas;
+    private Canvas mCanvas;
     private Paint mBitmpPaint = new Paint(Paint.DITHER_FLAG);
 
     private ArrayList<Draw> paths = new ArrayList<>();
@@ -62,7 +62,7 @@ public class PaintView extends View {
         int Height = displayMetrics.heightPixels;
         int Width = displayMetrics.widthPixels;
         mbitmap = Bitmap.createBitmap(Width , Height , Bitmap.Config.ARGB_8888);
-        mcanvas = new Canvas(mbitmap);
+        mCanvas = new Canvas(mbitmap);
 
         currentcolor = Default_color;
         BrushWidth = Brush_size;
@@ -72,13 +72,13 @@ public class PaintView extends View {
     protected void onDRAW(Canvas canvas) {
         //drawing background
         canvas.save();
-        canvas.drawColor(BackgroundColor);
+        mCanvas.drawColor(BackgroundColor);
 
         for (Draw draw : paths) {
             mPaint.setColor(draw.color);
             mPaint.setStrokeWidth(BrushWidth);
             mPaint.setMaskFilter(null);
-            canvas.drawPath(draw.path , mPaint);
+            mCanvas.drawPath(draw.path , mPaint);
         }
         canvas.drawBitmap(mbitmap , 0 , 0 , mBitmpPaint);
         canvas.restore();
@@ -113,7 +113,7 @@ public class PaintView extends View {
         }
     }
 
-    public boolean TouchHandler(MotionEvent mEvent) {
+    public boolean onTouchEvent(MotionEvent mEvent) {
         float x = mEvent.getX();
         float y = mEvent.getY();
 
