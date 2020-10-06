@@ -5,12 +5,12 @@ import android.graphics.Path;
 //initializing
 public class Draw {
     public int color;
-    public int paintSize;
+    public int paintWidth;
     public Path path;
 
-    public Draw(int color,int paintSize,Path path){
+    public Draw(int color,int paintWidth,Path path){
         this.color = color;
-        this.paintSize = paintSize;
+        this.paintWidth = paintWidth;
         this.path = path;
     }
 }

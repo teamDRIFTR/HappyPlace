@@ -1,17 +1,14 @@
 package com.example.happyplace;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-
 import android.Manifest;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,7 +18,6 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,8 +29,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Button button;
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         paintView = findViewById(R.id.paintView);
         button = findViewById(R.id.change_color_button);
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -45,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         paintView.initialize(displayMetrics);
 
-        textView.setText("brush size"+ seekBar.getProgress());
+        textView.setText("Pen size: "+ seekBar.getProgress());
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu)
     {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main,menu);
+        menuInflater.inflate(R.menu.main, menu);
         return super.onCreateOptionsMenu(menu);
     }
     private void GetStoragePermission()

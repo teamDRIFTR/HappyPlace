@@ -34,7 +34,7 @@ public class PaintView extends View {
     private int currentcolor;
     private int BackgroundColor = Default_bg_color;
     private int BrushWidth;
-    private Bitmap mbitmap;
+    private Bitmap mBitmap;
     private Canvas mCanvas;
     private Paint mBitmpPaint = new Paint(Paint.DITHER_FLAG);
 
@@ -47,6 +47,7 @@ public class PaintView extends View {
 
     public PaintView(Context context , AttributeSet attrs) {
         super(context , attrs);
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
         mPaint.setDither(true);
@@ -61,15 +62,15 @@ public class PaintView extends View {
     public void initialize(DisplayMetrics displayMetrics) {
         int Height = displayMetrics.heightPixels;
         int Width = displayMetrics.widthPixels;
-        mbitmap = Bitmap.createBitmap(Width , Height , Bitmap.Config.ARGB_8888);
-        mCanvas = new Canvas(mbitmap);
+        mBitmap = Bitmap.createBitmap(Width , Height , Bitmap.Config.ARGB_8888);
+        mCanvas = new Canvas(mBitmap);
 
         currentcolor = Default_color;
         BrushWidth = Brush_size;
     }
 
     //touch events
-    protected void onDRAW(Canvas canvas) {
+    protected void onDraw(Canvas canvas) {
         //drawing background
         canvas.save();
         mCanvas.drawColor(BackgroundColor);
@@ -80,7 +81,7 @@ public class PaintView extends View {
             mPaint.setMaskFilter(null);
             mCanvas.drawPath(draw.path , mPaint);
         }
-        canvas.drawBitmap(mbitmap , 0 , 0 , mBitmpPaint);
+        canvas.drawBitmap(mBitmap , 0 , 0 , mBitmpPaint);
         canvas.restore();
     }
 
@@ -173,6 +174,7 @@ public class PaintView extends View {
     //allows user to save image
     public void saveImage() {
         int count = 0;
+
         File Dir = Environment.getExternalStorageDirectory();
         File subDir = new File(Dir.toString() + "/Picture/Paint");
 
@@ -183,9 +185,11 @@ public class PaintView extends View {
                     count++;
                 }
             }
-        } else {
+        }
+        else {
             subDir.mkdir();
         }
+
         if (subDir.exists()) {
 
             File image = new File(subDir , "/drawing_" + (count + 1) + ".png");
@@ -195,7 +199,7 @@ public class PaintView extends View {
 
                 fileOutputStream = new FileOutputStream(image);
 
-                //mbitmap.compress(Bitmap.CompressFormat.PNG , 100 , fileOutputStream);
+                //mBitmap.compress(Bitmap.CompressFormat.PNG , 100 , fileOutputStream);
 
                 fileOutputStream.flush();
                 fileOutputStream.close();
