@@ -7,6 +7,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.DialogInterface;
+
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -18,6 +19,9 @@ import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
+
+
 import yuku.ambilwarna.AmbilWarnaDialog;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
     private PaintView paintView;
     private int defaultColor;
     private int STORAGE_PERMISSION_CODE = 1;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -160,4 +167,5 @@ public class MainActivity extends AppCompatActivity {
         });
         ambilWarnaDialog.show();
     }
+
 }

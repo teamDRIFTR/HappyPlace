@@ -62,5 +62,17 @@
         app:layout_constraintEnd_toStartOf="@+id/change_color_button"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <Button
+        android:id="@+id/Button_for_Ar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Switch to AR"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.95"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/paintView"
+        app:layout_constraintVertical_bias="0.0" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
