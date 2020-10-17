@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat;
 import android.Manifest;
 import android.content.DialogInterface;
 
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     private PaintView paintView;
     private int defaultColor;
     private int STORAGE_PERMISSION_CODE = 1;
-
+    private Button AR_button;
 
 
 
@@ -42,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
 
         paintView = findViewById(R.id.paintView);
         button = findViewById(R.id.change_color_button);
+        AR_button = findViewById(R.id.AR_View);
+
         DisplayMetrics displayMetrics = new DisplayMetrics();
         SeekBar seekBar = findViewById(R.id.seekBar);
         final TextView textView =  findViewById(R.id.current_pen_size);
@@ -58,7 +61,12 @@ public class MainActivity extends AppCompatActivity {
                 OpenColorMenu();
             }
         });
-
+       AR_button.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View v) {
+               openARActivity();
+           }
+       });
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar , int progress , boolean fromUser) {
@@ -168,4 +176,9 @@ public class MainActivity extends AppCompatActivity {
         ambilWarnaDialog.show();
     }
 
+    public void openARActivity()
+    {
+        Intent intent = new Intent(this, arFRAGMENT.class );
+        startActivity(intent);
+    }
 }

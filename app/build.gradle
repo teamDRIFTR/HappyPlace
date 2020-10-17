@@ -18,18 +18,34 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = '1.8'
-        targetCompatibility = '1.8'
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.0.0'
+    implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.ar.sceneform.ux:sceneform-ux:1.8.0'
     testImplementation 'junit:junit:4.12'
     implementation 'com.github.yukuku:ambilwarna:2.0.1'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
+apply plugin: 'com.google.ar.sceneform.plugin'
+
+sceneform.asset('sampledata/Wolves.obj',
+        'default',
+        'sampledata/Wolves.sfa',
+        'src/main/assets/Wolves')
+
+sceneform.asset('sampledata/wolves.obj',
+        'default',
+        'sampledata/wolves.sfa',
+        'src/main/assets/wolves')
+
+sceneform.asset('sampledata/wolves.obj',
+        'default',
+        'sampledata/wolves.sfa',
+        'src/main/res/raw/wolves')

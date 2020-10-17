@@ -1,9 +1,12 @@
 package com.example.happyplace;
 
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
+import android.widget.Toast;
 
 import com.google.ar.core.Anchor;
 import com.google.ar.core.HitResult;
@@ -28,6 +31,17 @@ public class arFRAGMENT extends AppCompatActivity {
         SetUp();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void setModelup(){
+        modelRenderable.builder()
+                .setSource(this, R.raw.wolves)
+                .build()
+                .thenAccept(renderable -> modelRenderable = renderable)
+                .exceptionally(throwable -> {
+                    Toast.makeText(arFRAGMENT.this, "error", Toast.LENGTH_SHORT);
+                    return null;
+                });
+    }
     private void SetUp() {
         arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
             @Override
