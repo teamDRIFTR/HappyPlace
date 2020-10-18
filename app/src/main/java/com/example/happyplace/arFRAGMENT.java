@@ -1,8 +1,11 @@
 package com.example.happyplace;
 
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.TargetApi;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MotionEvent;
@@ -20,46 +23,37 @@ import com.google.ar.sceneform.ux.TransformableNode;
 public class arFRAGMENT extends AppCompatActivity {
 
     private ArFragment arFragment;
-    private ModelRenderable modelRenderable;
 
+    @TargetApi(24)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ar_fragment);
 
         arFragment = (ArFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        SetUp();
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    private void setModelup(){
-        modelRenderable.builder()
-                .setSource(this, R.raw.wolves)
-                .build()
-                .thenAccept(renderable -> modelRenderable = renderable)
-                .exceptionally(throwable -> {
-                    Toast.makeText(arFRAGMENT.this, "error", Toast.LENGTH_SHORT);
-                    return null;
-                });
-    }
-    private void SetUp() {
-        arFragment.setOnTapArPlaneListener(new BaseArFragment.OnTapArPlaneListener() {
-            @Override
-            public void onTapPlane(HitResult hitResult , Plane plane , MotionEvent motionEvent) {
+        arFragment.setOnTapArPlaneListener(((hitResult , plane , motionEvent) ->{
                 Anchor anchor = hitResult.createAnchor();
-                AnchorNode anchorNode = new AnchorNode(anchor);
-                anchorNode.setParent(arFragment.getArSceneView().getScene());
-                Create(anchorNode);
-            }
-        });
+                ModelRenderable.builder()
+                        .setSource(this, Uri.parse("wolves.sfb"))
+                        .build()
+                        .thenAccept(modelRenderable -> addModel(anchor, modelRenderable))
+                        .exceptionally(throwable -> {
+                            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                            builder.setMessage(throwable.getMessage())
+                                    .show();
+                            return null;
+                        });
+
+        } ));
     }
 
-    private void Create(AnchorNode anchorNode){
-        TransformableNode node = new TransformableNode(arFragment.getTransformationSystem());
-        node.setParent(anchorNode);
-        node.setParent(anchorNode);
-        node.setRenderable(modelRenderable);
-        node.select();
-    }
+    private void addModel(Anchor anchor , ModelRenderable modelRenderable) {
+        AnchorNode anchorNode = new AnchorNode(anchor);
+        TransformableNode transformableNode = new TransformableNode(arFragment.getTransformationSystem()); //a node whos position can be changed
+        transformableNode.setParent(anchorNode);
+        transformableNode.setRenderable(modelRenderable);
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+        transformableNode.select();
 
+    }
 }
