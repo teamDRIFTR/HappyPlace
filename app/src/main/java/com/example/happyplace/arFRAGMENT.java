@@ -54,6 +54,5 @@ public class arFRAGMENT extends AppCompatActivity {
         transformableNode.setRenderable(modelRenderable);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
         transformableNode.select();
-
     }
 }
