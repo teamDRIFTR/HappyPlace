@@ -1,6 +1,7 @@
 package com.example.happyplace;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -172,14 +173,15 @@ public class PaintView extends View {
     }
 
     //allows user to save image
+    @SuppressLint("WrongThread")
     public void saveImage() {
         int count = 0;
 
-        File Dir = Environment.getExternalStorageDirectory();
-        File subDir = new File(Dir.toString() + "/Picture/Paint");
+        File Direct = Environment.getExternalStorageDirectory();
+        File subDirect = new File(Direct.toString() + "/Picture/Paint");
 
-        if (subDir.exists()) {
-            File[] existing = subDir.listFiles();
+        if (subDirect.exists()) {
+            File[] existing = subDirect.listFiles();
             for (File file : existing) {
                 if (file.getName().endsWith(".jpg") || file.getName().endsWith(".png")) {
                     count++;
@@ -187,19 +189,20 @@ public class PaintView extends View {
             }
         }
         else {
-            subDir.mkdir();
+            subDirect.mkdir();
         }
 
-        if (subDir.exists()) {
+        if (subDirect.exists()) {
 
-            File image = new File(subDir , "/drawing_" + (count + 1) + ".png");
+            File image = new File(subDirect , "/drawing_" + (count + 1) + ".png");
             FileOutputStream fileOutputStream;
 
             try {
 
                 fileOutputStream = new FileOutputStream(image);
 
-                //mBitmap.compress(Bitmap.CompressFormat.PNG , 100 , fileOutputStream);
+               mBitmap.compress(Bitmap.CompressFormat.PNG , 100 , fileOutputStream);
+
 
                 fileOutputStream.flush();
                 fileOutputStream.close();

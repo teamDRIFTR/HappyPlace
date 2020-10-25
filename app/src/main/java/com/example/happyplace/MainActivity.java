@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
 
         paintView = findViewById(R.id.paintView);
         button = findViewById(R.id.change_color_button);
-        AR_button = findViewById(R.id.AR_View);
+        //AR_button = findViewById(R.id.AR_View);
 
         DisplayMetrics displayMetrics = new DisplayMetrics();
         SeekBar seekBar = findViewById(R.id.seekBar);
@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         paintView.initialize(displayMetrics);
 
         textView.setText("Pen size: "+ seekBar.getProgress());
+
+        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         button.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -61,12 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 OpenColorMenu();
             }
         });
-       AR_button.setOnClickListener(new View.OnClickListener() {
-           @Override
-           public void onClick(View v) {
-               openARActivity();
-           }
-       });
+
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar , int progress , boolean fromUser) {
