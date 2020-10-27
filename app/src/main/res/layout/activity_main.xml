@@ -8,8 +8,8 @@
 
     <com.example.happyplace.PaintView
         android:id="@+id/paintView"
-        android:layout_width="383dp"
-        android:layout_height="630dp"
+        android:layout_width="582dp"
+        android:layout_height="841dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
